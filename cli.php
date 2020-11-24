@@ -29,37 +29,49 @@ echo "\nWELCOME TO THE ELECTRONIC STORE\n\n",
 
 $item = null;
 
-switch (readline('Type a number:'))
+switch (readline('Type a number: '))
 {
 	case '1': $item = new ElectronicItem\Console(); break;
 	case '2': $item = new ElectronicItem\Television(); break;
 	case '3': $item = new ElectronicItem\Microwave(); break;
-	default : exit;
+	default: exit;
 }
 
-for ($i=0; $i < 5; ++$i)
+$item->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
+
+for ($i=0; $i < $item->maxExtras(); ++$i)
 {
-	echo "Do you want to add an extra to your purchase?\n",
+	echo "\nDo you want to add an extra to your purchase?\n",
 		"0. No thanks\n",
 		"1. Yes, add one remote controller\n",
-		"2. Yes, add one wired controller";
+		"2. Yes, add one wired controller\n";
 
 	$extra = new ElectronicItem\Controller();
+	$extra->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
 
-	switch (readline('Type a number:'))
+	switch (readline('Type a number: '))
 	{
 		case '1': $extra->setWired(false); break;
 		case '2': $extra->setWired(true); break;
-		default : break 2;
+		default: break 2;
 	}
 
 	try
 	{ $item->addExtra($extra); }
 	catch (Exception $e)
-	{ echo 'Sorry but ' . $e->getMessage(); }
+	{ echo "\nSorry but " . $e->getMessage(), "\n"; }
 }
 
 $items = new ElectronicItem\ElectronicItems();
 $items->addItem($item);
 
-echo $items->getTotalPrice();
+foreach ($items->getSortedItemsByPrice() as $item)
+{
+	echo "\n", $item->getType(), ' $', $item->getPrice(), "\n";
+	$nbExtra = $item->countExtra();
+
+	if ($nbExtra > 0)
+	{ echo '+', $nbExtra, ' extra controller $', $item->getExtrasPrice(), "\n"; }
+}
+
+echo 'TOTAL = $', $items->getTotalPrice(), "\n";

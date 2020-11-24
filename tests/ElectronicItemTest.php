@@ -1,9 +1,9 @@
 <?php
-require 'ElectronicItem/ElectronicItem.php';
-require 'ElectronicItem/Console.php';
-require 'ElectronicItem/Television.php';
-require 'ElectronicItem/Microwave.php';
-require 'ElectronicItem/Controller.php';
+require_once 'ElectronicItem/ElectronicItem.php';
+require_once 'ElectronicItem/Console.php';
+require_once 'ElectronicItem/Television.php';
+require_once 'ElectronicItem/Microwave.php';
+require_once 'ElectronicItem/Controller.php';
 
 /**
  * Unit testing.
@@ -16,12 +16,14 @@ class ElectronicItemTest extends PHPUnit\Framework\TestCase
 		$item = new ElectronicItem\Console();
 		$this->assertSame(\ElectronicItem\ElectronicItem::ELECTRONIC_ITEM_CONSOLE, $item->getType());
 
-		$randomPrice = rand(1,999) / rand(2,3);
+		$randomPrice = round(rand(1,999) / rand(2,3), 2);
 		$item->setPrice($randomPrice);
 		$this->assertSame($randomPrice, $item->getPrice());
+		$bool = (bool)rand(0,1);
 
 		for ($i=0; $i < $item->maxExtras(); ++$i)
 		{
+			$bool = !$bool;
 			$extra = new ElectronicItem\Controller();
 			$extra->setWired(rand(0,1));
 			$item->addExtra($extra);
@@ -57,11 +59,12 @@ class ElectronicItemTest extends PHPUnit\Framework\TestCase
 		$this->assertSame($randomPrice, $item->getPrice());
 
 		$extra = new ElectronicItem\Controller();
-		$extra->setWired(true);
+		$extra->setWired(false);
 		$item->addExtra($extra);
 
 		$this->expectException(Exception::class);
 		$extra = new ElectronicItem\Controller();
+		$extra->setWired(true);
 		$item->addExtra($extra);
 	}
 }

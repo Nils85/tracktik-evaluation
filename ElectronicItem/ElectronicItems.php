@@ -11,7 +11,7 @@ class ElectronicItems
 	 */
 	private $items = array();
 
-	// No constructor needed...
+	// Constructor not needed...
 	//public function __construct(array $items)
 	//{
 	//	$this->items = $items;
@@ -36,7 +36,7 @@ class ElectronicItems
 		$order = [];
 
 		foreach ($this->items as $key => $item)
-		{ $order[$key] = $item->getPrice(); }
+		{ $order[$key] = $item->getPrice() + $item->getExtrasPrice(); }
 
 		if ($reverseOrder)
 		{ arsort($order, SORT_NUMERIC); }
@@ -54,7 +54,8 @@ class ElectronicItems
 	/**
 	 * Returns specific type of items.
 	 * @param string $type
-	 * @return array|false
+	 * @return \ElectronicItem\ElectronicItem[] | false
+	 * @todo
 	 */
 	public function getItemsByType($type)
 	{
@@ -62,7 +63,7 @@ class ElectronicItems
 		{
 			$callback = function($item) use ($type)
 			{
-				return $item->type == $type;
+				return $item->getType() == $type;
 			};
 
 			return array_filter($this->items, $callback);
@@ -80,7 +81,7 @@ class ElectronicItems
 		$total = 0.0;
 
 		foreach ($this->items as $item)
-		{ $total += $item->getPrice(); }
+		{ $total += $item->getPrice() + $item->getExtrasPrice(); }
 
 		return $total;
 	}

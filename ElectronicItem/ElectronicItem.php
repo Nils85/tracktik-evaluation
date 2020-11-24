@@ -23,6 +23,9 @@ abstract class ElectronicItem
 	protected $isWired = false;
 	protected $isWireless = false;
 
+	/**
+	 * @var \ElectronicItem\Controller[]
+	 */
 	protected $extras = [];
 
 	const ELECTRONIC_ITEM_TELEVISION = 'television';
@@ -30,6 +33,11 @@ abstract class ElectronicItem
 	const ELECTRONIC_ITEM_MICROWAVE = 'microwave';
 	const ELECTRONIC_ITEM_EXTRA = 'controller';
 
+	/**
+	 * Types enumeration.
+	 * @var string[]
+	 * @todo Maybe it should be better to use a constant array
+	 */
 	private static $types = array(
 		self::ELECTRONIC_ITEM_CONSOLE,
 		self::ELECTRONIC_ITEM_MICROWAVE,
@@ -44,6 +52,20 @@ abstract class ElectronicItem
 	public function getPrice()
 	{
 		return $this->price;
+	}
+
+	/**
+	 * Total price for all extra controller.
+	 * @return float
+	 */
+	public function getExtrasPrice()
+	{
+		$price = 0;
+
+		foreach ($this->extras as $extra)
+		{ $price += $extra->getPrice(); }
+
+		return $price;
 	}
 
 	/**
@@ -105,14 +127,19 @@ abstract class ElectronicItem
 	public function addExtra(Controller $extra)
 	{
 		if (count($this->extras) == $this->maxExtras())
-		{ throw new Exception('You cannot add more than ' . $this->maxExtras() . ' extra with a ' . $this->type); }
+		{ throw new Exception('you cannot add more extra controller with a ' . $this->type); }
 
-		if ($extra->isWired() != $this->isWired())
-		{ throw new Exception('You can NOT add more extra with this item'); }
+		if ($extra->isWired() && !$this->isWired())
+		{ throw new Exception('you cannot add a wired controller with a ' . $this->type); }
 
-		if ($extra->isWireless() != $this->isWireless())
-		{ throw new Exception('You can NOT add more extra with this item'); }
+		if ($extra->isWireless() && !$this->isWireless())
+		{ throw new Exception('you cannot add a wireless controller with a ' . $this->type); }
 
 		$this->extras[] = $extra;
+	}
+
+	public function countExtra()
+	{
+		return count($this->extras);
 	}
 }
