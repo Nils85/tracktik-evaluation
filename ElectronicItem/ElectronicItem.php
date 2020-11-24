@@ -8,9 +8,9 @@ use Exception;
 abstract class ElectronicItem
 {
 	/**
-	 * @var float
+	 * @var float Money
 	 */
-	protected $price;
+	protected $price = 0.0;
 
 	/**
 	 * @var string
@@ -34,6 +34,7 @@ abstract class ElectronicItem
 		self::ELECTRONIC_ITEM_CONSOLE,
 		self::ELECTRONIC_ITEM_MICROWAVE,
 		self::ELECTRONIC_ITEM_TELEVISION,
+		self::ELECTRONIC_ITEM_EXTRA
 	);
 
 	/**

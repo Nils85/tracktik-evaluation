@@ -13,6 +13,10 @@ class Controller extends ElectronicItem
 		$this->type = parent::ELECTRONIC_ITEM_EXTRA;
 	}
 
+	/**
+	 * Set accessor to define if the controller is wired or wireless.
+	 * @param bool $isWired
+	 */
 	public function setWired($isWired)
 	{
 		$this->isWired = (bool)$isWired;

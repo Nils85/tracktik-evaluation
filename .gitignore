@@ -6,5 +6,10 @@ desktop.ini
 nbproject/
 .idea/
 
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+*.phar
+
 # SQLite databases
 *.db

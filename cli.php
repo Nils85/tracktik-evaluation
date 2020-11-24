@@ -14,9 +14,9 @@ require 'ElectronicItem/Controller.php';
 if (function_exists('readline') == false)
 {
 	if (strtolower(substr(PHP_OS, 0, 3)) == 'win')
-	{ echo 'You need PHP 7.1 minimum on Windows to use the readline function'; }
+	{ echo 'You need PHP 7.1 minimum on Windows to use the readline extension!'; }
 	else
-	{ echo 'This script need the readline extension'; }
+	{ echo 'You need to install and enable the readline extension in your php.ini'; }
 
 	exit;
 }
@@ -34,44 +34,32 @@ switch (readline('Type a number:'))
 	case '1': $item = new ElectronicItem\Console(); break;
 	case '2': $item = new ElectronicItem\Television(); break;
 	case '3': $item = new ElectronicItem\Microwave(); break;
+	default : exit;
 }
 
-for ($i=0; $i < 9; ++$i)
+for ($i=0; $i < 5; ++$i)
 {
 	echo "Do you want to add an extra to your purchase?\n",
 		"0. No thanks\n",
 		"1. Yes, add one remote controller\n",
 		"2. Yes, add one wired controller";
 
-	$extra = null;
+	$extra = new ElectronicItem\Controller();
 
 	switch (readline('Type a number:'))
 	{
-		case '0':
-			break 2;
-
-		case '1':
-			$extra = new ElectronicItem\Controller();
-			$extra->setWired(false);
-			break;
-
-		case '2':
-			$extra = new ElectronicItem\Controller();
-			$extra->setWired(true);
-			break;
+		case '1': $extra->setWired(false); break;
+		case '2': $extra->setWired(true); break;
+		default : break 2;
 	}
 
-	if ($extra instanceof ElectronicItem\Controller)
-	{
-		try
-		{
-			$item->addExtra($extra);
-		}
-		catch (Exception $e)
-		{
-			echo 'Sorry but ' . $e->getMessage();
-		}
-	}
+	try
+	{ $item->addExtra($extra); }
+	catch (Exception $e)
+	{ echo 'Sorry but ' . $e->getMessage(); }
 }
 
-var_dump($item);
+$items = new ElectronicItem\ElectronicItems();
+$items->addItem($item);
+
+echo $items->getTotalPrice();
