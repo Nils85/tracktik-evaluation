@@ -75,14 +75,33 @@ class ElectronicItemsTest extends PHPUnit\Framework\TestCase
 	/**
 	 * Question 1.
 	 */
+	public function testSortItemsByPrice()
+	{
+		$lastPrice = 0;
+
+		foreach (self::$items->getSortedItemsByPrice() as $item)
+		{
+			$price = $item->getPrice() + $item->getExtrasPrice();
+			$this->assertGreaterThanOrEqual($lastPrice ,$price);
+			$lastPrice = $price;
+		}
+	}
+
+	/**
+	 * Question 1.
+	 */
 	public function testTotalPricing()
 	{
-		//TODO: Sort the items by price
-
-		// Total
 		$this->assertSame(910.99, self::$items->getTotalPrice());
 	}
 
-	//TODO: public function testSortItemsByPrice()
-	//TODO: public function testGetItemsByType()
+	/**
+	 * Answer to the question 2.
+	 */
+	public function testGetItemsByType()
+	{
+		$items = self::$items->getItemsByType(\ElectronicItem\ElectronicItem::ELECTRONIC_ITEM_CONSOLE);
+		$this->assertSame(350.98, $items[0]->getPrice());
+		$this->assertSame(80, $items[0]->getExtrasPrice());
+	}
 }

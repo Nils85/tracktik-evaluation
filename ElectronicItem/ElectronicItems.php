@@ -55,11 +55,10 @@ class ElectronicItems
 	 * Returns specific type of items.
 	 * @param string $type
 	 * @return \ElectronicItem\ElectronicItem[] | false
-	 * @todo
 	 */
 	public function getItemsByType($type)
 	{
-		if (in_array($type, ElectronicItem::$types))
+		if (in_array($type, ElectronicItem::ELECTRONIC_ITEMS))
 		{
 			$callback = function($item) use ($type)
 			{

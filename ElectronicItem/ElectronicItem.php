@@ -36,14 +36,13 @@ abstract class ElectronicItem
 	/**
 	 * Types enumeration.
 	 * @var string[]
-	 * @todo Maybe it should be better to use a constant array
 	 */
-	private static $types = array(
+	const ELECTRONIC_ITEMS = [
 		self::ELECTRONIC_ITEM_CONSOLE,
 		self::ELECTRONIC_ITEM_MICROWAVE,
 		self::ELECTRONIC_ITEM_TELEVISION,
 		self::ELECTRONIC_ITEM_EXTRA
-	);
+	];
 
 	/**
 	 * Get accessor for the item price.

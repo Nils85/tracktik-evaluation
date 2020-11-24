@@ -21,53 +21,61 @@ if (function_exists('readline') == false)
 	exit;
 }
 
-echo "\nWELCOME TO THE ELECTRONIC STORE\n\n",
-	"Choose something to buy:\n",
-	"1. Console\n",
-	"2. Television\n",
-	"3. Microwave\n";
+$items = new ElectronicItem\ElectronicItems();
 
-$item = null;
+echo "\nWELCOME TO THE ELECTRONIC STORE\n";
 
-switch (readline('Type a number: '))
+for ($i=0; $i < 5; ++$i)
 {
-	case '1': $item = new ElectronicItem\Console(); break;
-	case '2': $item = new ElectronicItem\Television(); break;
-	case '3': $item = new ElectronicItem\Microwave(); break;
-	default: exit;
-}
+	$item = null;
 
-$item->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
-
-for ($i=0; $i < $item->maxExtras(); ++$i)
-{
-	echo "\nDo you want to add an extra to your purchase?\n",
-		"0. No thanks\n",
-		"1. Yes, add one remote controller\n",
-		"2. Yes, add one wired controller\n";
-
-	$extra = new ElectronicItem\Controller();
-	$extra->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
+	echo "\nChoose something to buy:\n",
+		"1. Console\n",
+		"2. Television\n",
+		"3. Microwave\n",
+		"0. I'm done, let's check the bill\n";
 
 	switch (readline('Type a number: '))
 	{
-		case '1': $extra->setWired(false); break;
-		case '2': $extra->setWired(true); break;
+		case '1': $item = new ElectronicItem\Console(); break;
+		case '2': $item = new ElectronicItem\Television(); break;
+		case '3': $item = new ElectronicItem\Microwave(); break;
 		default: break 2;
 	}
 
-	try
-	{ $item->addExtra($extra); }
-	catch (Exception $e)
-	{ echo "\nSorry but " . $e->getMessage(), "\n"; }
+	$item->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
+
+	for ($j = $item->maxExtras(); $j != 0; --$j)
+	{
+		echo "\nDo you want to add an extra to your purchase?\n",
+			"0. No thanks\n",
+			"1. Yes, add one remote controller\n",
+			"2. Yes, add one wired controller\n";
+
+		$extra = new ElectronicItem\Controller();
+		$extra->setPrice(round(rand(1,999) / rand(2,3), 2));  // Random price
+
+		switch (readline('Type a number: '))
+		{
+			case '1': $extra->setWired(false); break;
+			case '2': $extra->setWired(true); break;
+			default: break 2;
+		}
+
+		try
+		{ $item->addExtra($extra); }
+		catch (Exception $e)
+		{ echo "\nSorry but " . $e->getMessage(), "!\n"; }
+	}
+
+	$items->addItem($item);
 }
 
-$items = new ElectronicItem\ElectronicItems();
-$items->addItem($item);
+echo "\nThis is your bill:\n";
 
 foreach ($items->getSortedItemsByPrice() as $item)
 {
-	echo "\n", $item->getType(), ' $', $item->getPrice(), "\n";
+	echo $item->getType(), ' $', $item->getPrice(), "\n";
 	$nbExtra = $item->countExtra();
 
 	if ($nbExtra > 0)
