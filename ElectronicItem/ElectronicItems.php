@@ -58,7 +58,7 @@ class ElectronicItems
 	 */
 	public function getItemsByType($type)
 	{
-		if (in_array($type, ElectronicItem::ELECTRONIC_ITEMS))
+		if (in_array($type, ElectronicItem::TYPES))
 		{
 			$callback = function($item) use ($type)
 			{

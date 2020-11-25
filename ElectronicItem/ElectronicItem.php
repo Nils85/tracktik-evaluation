@@ -37,7 +37,7 @@ abstract class ElectronicItem
 	 * Types enumeration.
 	 * @var string[]
 	 */
-	const ELECTRONIC_ITEMS = [
+	const TYPES = [
 		self::ELECTRONIC_ITEM_CONSOLE,
 		self::ELECTRONIC_ITEM_MICROWAVE,
 		self::ELECTRONIC_ITEM_TELEVISION,
