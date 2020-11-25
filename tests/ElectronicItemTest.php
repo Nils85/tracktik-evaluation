@@ -19,11 +19,9 @@ class ElectronicItemTest extends PHPUnit\Framework\TestCase
 		$randomPrice = round(rand(1,999) / rand(2,3), 2);
 		$item->setPrice($randomPrice);
 		$this->assertSame($randomPrice, $item->getPrice());
-		$bool = (bool)rand(0,1);
 
 		for ($i=0; $i < $item->maxExtras(); ++$i)
 		{
-			$bool = !$bool;
 			$extra = new ElectronicItem\Controller();
 			$extra->setWired(rand(0,1));
 			$item->addExtra($extra);
@@ -39,7 +37,7 @@ class ElectronicItemTest extends PHPUnit\Framework\TestCase
 		$item = new ElectronicItem\Microwave();
 		$this->assertSame(\ElectronicItem\ElectronicItem::ELECTRONIC_ITEM_MICROWAVE, $item->getType());
 
-		$randomPrice = rand(1,999) / rand(2,3);
+		$randomPrice = round(rand(1,999) / rand(2,3), 2);
 		$item->setPrice($randomPrice);
 		$this->assertSame($randomPrice, $item->getPrice());
 
@@ -54,7 +52,7 @@ class ElectronicItemTest extends PHPUnit\Framework\TestCase
 		$item = new ElectronicItem\Television();
 		$this->assertSame(\ElectronicItem\ElectronicItem::ELECTRONIC_ITEM_TELEVISION, $item->getType());
 
-		$randomPrice = rand(1,999) / rand(2,3);
+		$randomPrice = round(rand(1,999) / rand(2,3), 2);
 		$item->setPrice($randomPrice);
 		$this->assertSame($randomPrice, $item->getPrice());
 
